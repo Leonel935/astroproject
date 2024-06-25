@@ -1,23 +1,47 @@
-<h1>Timer</h1>
+<section class="card flex flex-col items-center justify-center h-screen bg-black text-white">
+  <div class="timer-container text-4xl">
+    <a class="timer">00:00</a>
+  </div>
+  <div class="button-container mt-4">
+    <button class="start-button bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">Start</button>
+    <button class="stop-button bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded ml-2">Stop</button>
+    <button class="reset-button bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">Reset</button>
+  </div>
+</section>
 
-<style></style>
+<script class="timer-script">
+  let count = 60 * 5;
+  const startButton = document.querySelector('.start-button');
+  const stopButton = document.querySelector('.stop-button');
+  const resetButton = document.querySelector('.reset-button');
+  const timer = document.querySelector('.timer');
+  let interval;
 
-<script>
-  const button = document.querySelector('.start-button')
-  const timer = document.querySelector('.timer')
-  button?.addEventListener('click', () => {
-    let count = 60 * 5
-    const interval = setInterval(() => {
-      count--
-      const minutes = Math.floor(count / 60).toString().padStart(2, '0')
-      const seconds = (count % 60).toString().padStart(2, '0')
-      const text = `${minutes}:${seconds}`
-      if (timer) {
-        timer.innerHTML = text
+  startButton?.addEventListener('click', () => {
+    clearInterval(interval);
+    count = 60 * 5;
+    interval = setInterval(() => {
+      count--;
+      if (count < 0) {
+        clearInterval(interval);
+        return;
       }
-      if (count <= 0) {
-        clearInterval(interval)
-      }
-    }, 1000)
-  })
+      const minutes = Math.floor(count / 60).toString().padStart(2, '0');
+      const seconds = (count % 60).toString().padStart(2, '0');
+      const text = `${minutes}:${seconds}`;
+      timer.textContent = text;
+    }, 1000);
+  });
+
+  stopButton?.addEventListener('click', () => {
+    clearInterval(interval);
+  });
+
+  resetButton?.addEventListener('click', () => {
+    clearInterval(interval);
+    count = 60 * 5;
+    const minutes = Math.floor(count / 60).toString().padStart(2, '0');
+    const seconds = (count % 60).toString().padStart(2, '0');
+    timer.textContent = `${minutes}:${seconds}`;
+  });
 </script>
